@@ -18,6 +18,9 @@ export class AdminPermissionDto {
   @ApiProperty({ type: 'object', required: true, nullable: true })
   @Expose()
   public readonly conditions: unknown | null;
+  @ApiProperty({ type: 'boolean', required: true })
+  @Expose()
+  public readonly isSystem: boolean;
   @ApiProperty({ type: 'string', required: true })
   @Expose()
   public readonly createdAt: string;

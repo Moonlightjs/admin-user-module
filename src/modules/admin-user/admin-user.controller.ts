@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   HttpStatus,
   Param,
   Patch,
@@ -34,6 +35,9 @@ import {
 import { UpdateAdminUserInput } from '@modules/admin-user/dto/update-admin-user.input';
 import { AdminUser } from '@modules/admin-authentication/admin-user.decorator';
 import { CreateAdminUserInput } from '@modules/admin-user/dto';
+import { ChangeAdminPasswordInput } from '@modules/admin-user/dto/change-admin-password.input';
+import { RequireAdminPermissions } from '@modules/admin-authorization';
+import { ADMIN_PERMISSIONS } from '@src/constants';
 
 @ApiTags('admin-user')
 @Controller({
@@ -64,6 +68,18 @@ export class AdminUserController {
   }
 
   @ApiBearerAuth()
+  @ApiResponse({ status: HttpStatus.OK, type: SuccessResponseDto })
+  @IgnoreAuthorization()
+  @HttpCode(HttpStatus.OK)
+  @Post('/change-password')
+  async updatePassword(
+    @AdminUser() user: AdminJwtPayload,
+    @Body() params: ChangeAdminPasswordInput,
+  ) {
+    return this.adminUserService.changePassword(user.sub, params);
+  }
+
+  @ApiBearerAuth()
   @ApiBody({
     type: CreateAdminUserInput,
   })
@@ -71,6 +87,7 @@ export class AdminUserController {
     status: HttpStatus.CREATED,
     model: AdminUserDto,
   })
+  @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminUser.Create)
   @Post()
   async create(
     @Body() createAdminUserInput: CreateAdminUserInput,
@@ -97,6 +114,7 @@ export class AdminUserController {
     model: AdminUserDto,
     isArray: true,
   })
+  @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminRole.Read)
   @Get()
   findAll(@Query() params: Prisma.AdminUserFindManyArgs) {
     return this.adminUserService.findAll(params);
@@ -107,6 +125,7 @@ export class AdminUserController {
   })
   @ApiBearerAuth()
   @OpenApiPaginationResponse(AdminUserDto)
+  @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminRole.Read)
   @Get('/pagination')
   findAllPagination(@Query() params: Prisma.AdminUserFindManyArgs) {
     return this.adminUserService.findAllPagination(params);
@@ -117,6 +136,7 @@ export class AdminUserController {
   })
   @ApiBearerAuth()
   @OpenApiResponse({ status: HttpStatus.OK, model: AdminUserDto })
+  @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminRole.Read)
   @Get(':id')
   findOne(
     @Param('id') id: string,
@@ -129,7 +149,16 @@ export class AdminUserController {
   }
 
   @ApiBearerAuth()
+  @ApiResponse({ status: HttpStatus.OK, type: SuccessResponseDto })
+  @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminRole.Update)
+  @Patch(':id/reset-password')
+  async resetPassword(@Param('id') id: string) {
+    return this.adminUserService.resetPassword(id);
+  }
+
+  @ApiBearerAuth()
   @OpenApiResponse({ status: HttpStatus.OK, model: AdminUserDto })
+  @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminRole.Update)
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -149,6 +178,7 @@ export class AdminUserController {
 
   @ApiBearerAuth()
   @ApiResponse({ status: HttpStatus.OK, type: SuccessResponseDto })
+  @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminRole.Delete)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.adminUserService.remove({

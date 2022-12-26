@@ -1,13 +1,28 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { DEFAULT_SKIP, DEFAULT_TAKE } from '@src/constants';
-import { PagedResultDto, Pagination, toDto } from '@moonlightjs/common';
+import {
+  AdminUserErrorCodes,
+  DEFAULT_SKIP,
+  DEFAULT_TAKE,
+} from '@src/constants';
+import {
+  PagedResultDto,
+  Pagination,
+  toDto,
+  HttpErrorException,
+} from '@moonlightjs/common';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { AdminUserDto, AdminUserProfileDto } from './dto';
+import { ConfigService } from '@nestjs/config';
+import * as bcrypt from 'bcrypt';
+import { ChangeAdminPasswordInput } from 'module/modules/admin-user/dto/change-admin-password.input';
 
 @Injectable()
 export class AdminUserService {
-  constructor(protected prisma: PrismaService) {}
+  constructor(
+    protected prisma: PrismaService,
+    protected configService: ConfigService,
+  ) {}
 
   async getMe(id: string) {
     const adminUser = await this.prisma.adminUser.findFirst({
@@ -16,6 +31,37 @@ export class AdminUserService {
       },
     });
     return toDto(AdminUserProfileDto, adminUser);
+  }
+
+  async changePassword(
+    id: string,
+    input: ChangeAdminPasswordInput,
+  ): Promise<void> {
+    const user = await this.prisma.adminUser.findFirst({
+      where: {
+        id,
+      },
+    });
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+
+    if (user.password) {
+      if (!(await bcrypt.compare(input.currentPassword, user.password))) {
+        throw new HttpErrorException(AdminUserErrorCodes.PasswordInvalid);
+      }
+    }
+
+    const salt = await bcrypt.genSalt();
+    await this.prisma.adminUser.update({
+      where: {
+        id,
+      },
+      data: {
+        updatedAt: new Date(),
+        password: await bcrypt.hash(input.newPassword, salt),
+      },
+    });
   }
 
   async findOne(params: Prisma.AdminUserFindFirstArgs) {
@@ -66,5 +112,22 @@ export class AdminUserService {
       where,
     });
     return !!adminUser;
+  }
+
+  async resetPassword(id: string): Promise<void> {
+    const defaultPassword = this.configService.get<string>(
+      'DEFAULT_PASSWORD',
+      '!moonlight@123',
+    );
+    const salt = await bcrypt.genSalt();
+    await this.prisma.adminUser.update({
+      where: {
+        id,
+      },
+      data: {
+        updatedAt: new Date(),
+        password: await bcrypt.hash(defaultPassword, salt),
+      },
+    });
   }
 }

@@ -1,7 +1,7 @@
 import { AdminAuthenticationService } from '@modules/admin-authentication/admin-authentication.service';
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { ErrorCodes } from '@src/constants';
+import { AdminUserErrorCodes } from '@src/constants';
 import { HttpErrorException } from '@moonlightjs/common';
 import { Strategy } from 'passport-local';
 
@@ -28,13 +28,13 @@ export class AdminLocalStrategy extends PassportStrategy(
       password,
     });
     if (!user) {
-      throw new HttpErrorException(ErrorCodes.UserNotExists);
+      throw new HttpErrorException(AdminUserErrorCodes.UserNotExists);
     }
     if (user.isActive === false) {
-      throw new HttpErrorException(ErrorCodes.UserDeactivated);
+      throw new HttpErrorException(AdminUserErrorCodes.UserDeactivated);
     }
     if (user?.deletedAt) {
-      throw new HttpErrorException(ErrorCodes.UserDeleted);
+      throw new HttpErrorException(AdminUserErrorCodes.UserDeleted);
     }
     request.userAdmin = user;
   }

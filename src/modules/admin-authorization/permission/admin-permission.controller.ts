@@ -30,6 +30,10 @@ import {
   OpenApiResponse,
   SuccessResponseDto,
 } from '@moonlightjs/common';
+import { RequireAdminPermissions } from '@modules/admin-authorization/permission/admin-permissions.decorator';
+import { ADMIN_PERMISSIONS } from '@src/constants/admin-permission';
+import { HttpErrorException } from '@moonlightjs/common';
+import { AdminUserErrorCodes } from '@src/constants/error-codes';
 
 @ApiTags('admin-permission')
 @Controller({
@@ -48,6 +52,7 @@ export class AdminPermissionController {
     status: HttpStatus.CREATED,
     model: AdminPermissionDto,
   })
+  @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminPermission.Create)
   @Post()
   create(
     @Body() createAdminPermissionInput: CreateAdminPermissionInput,
@@ -70,6 +75,7 @@ export class AdminPermissionController {
     model: AdminPermissionDto,
     isArray: true,
   })
+  @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminPermission.Read)
   @Get()
   findAll(@Query() params: Prisma.AdminPermissionFindManyArgs) {
     return this.permissionService.findAll(params);
@@ -80,6 +86,7 @@ export class AdminPermissionController {
   })
   @ApiBearerAuth()
   @OpenApiPaginationResponse(AdminPermissionDto)
+  @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminPermission.Read)
   @Get('/pagination')
   findAllPagination(@Query() params: Prisma.AdminPermissionFindManyArgs) {
     return this.permissionService.findAllPagination(params);
@@ -90,6 +97,7 @@ export class AdminPermissionController {
   })
   @ApiBearerAuth()
   @OpenApiResponse({ status: HttpStatus.OK, model: AdminPermissionDto })
+  @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminPermission.Read)
   @Get(':id')
   findOne(
     @Param('id') id: string,
@@ -106,12 +114,21 @@ export class AdminPermissionController {
   @ApiBody({
     type: UpdateAdminPermissionInput,
   })
+  @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminPermission.Update)
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateAdminPermissionInput: UpdateAdminPermissionInput,
     @Query() params: Omit<Prisma.AdminPermissionUpdateArgs, 'data' | 'where'>,
   ) {
+    const adminPermission = await this.permissionService.findOne({
+      where: { id },
+    });
+    if (adminPermission.isSystem) {
+      throw new HttpErrorException(
+        AdminUserErrorCodes.SystemPermissionCannotModified,
+      );
+    }
     return this.permissionService.update({
       ...params,
       where: {
@@ -125,8 +142,17 @@ export class AdminPermissionController {
 
   @ApiBearerAuth()
   @ApiResponse({ status: HttpStatus.OK, type: SuccessResponseDto })
+  @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminPermission.Delete)
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
+    const adminPermission = await this.permissionService.findOne({
+      where: { id },
+    });
+    if (adminPermission.isSystem) {
+      throw new HttpErrorException(
+        AdminUserErrorCodes.SystemPermissionCannotDeleted,
+      );
+    }
     return this.permissionService.remove({
       id,
     });

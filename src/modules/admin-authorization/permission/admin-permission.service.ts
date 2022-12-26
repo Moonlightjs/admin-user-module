@@ -8,9 +8,11 @@ import { PagedResultDto, Pagination, toDto } from '@moonlightjs/common';
 export class AdminPermissionService {
   constructor(protected prisma: PrismaService) {}
 
-  async findOne(params: Prisma.AdminPermissionFindFirstArgs) {
+  async findOne(
+    params: Prisma.AdminPermissionFindFirstArgs,
+  ): Promise<AdminPermissionDto> {
     const adminPermission = await this.prisma.adminPermission.findFirst(params);
-    return toDto(AdminPermissionDto, adminPermission);
+    return toDto<AdminPermissionDto>(AdminPermissionDto, adminPermission);
   }
 
   async findAll(
@@ -24,7 +26,7 @@ export class AdminPermissionService {
     }
     const adminPermissions = await this.prisma.adminPermission.findMany(params);
     return adminPermissions.map((adminPermission: AdminPermission) =>
-      toDto(AdminPermissionDto, adminPermission),
+      toDto<AdminPermissionDto>(AdminPermissionDto, adminPermission),
     );
   }
 
@@ -45,7 +47,7 @@ export class AdminPermissionService {
     ]);
     return PagedResultDto.create({
       data: adminPermissions.map((adminPermission: AdminPermission) =>
-        toDto(AdminPermissionDto, adminPermission),
+        toDto<AdminPermissionDto>(AdminPermissionDto, adminPermission),
       ),
       pagination: Pagination.create({
         take: params.take,
@@ -59,14 +61,14 @@ export class AdminPermissionService {
     params: Prisma.AdminPermissionCreateArgs,
   ): Promise<AdminPermissionDto> {
     const adminPermission = await this.prisma.adminPermission.create(params);
-    return toDto(AdminPermissionDto, adminPermission);
+    return toDto<AdminPermissionDto>(AdminPermissionDto, adminPermission);
   }
 
   async update(
     params: Prisma.AdminPermissionUpdateArgs,
   ): Promise<AdminPermissionDto> {
     const adminPermission = await this.prisma.adminPermission.update(params);
-    return toDto(AdminPermissionDto, adminPermission);
+    return toDto<AdminPermissionDto>(AdminPermissionDto, adminPermission);
   }
 
   async remove(

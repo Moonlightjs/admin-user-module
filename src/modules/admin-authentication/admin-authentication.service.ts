@@ -12,7 +12,7 @@ import {
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtSignOptions, JwtService } from '@nestjs/jwt';
-import { ErrorCodes } from '@src/constants';
+import { AdminUserErrorCodes } from '@src/constants';
 import { PrismaService } from '@src/infra/prisma/prisma.service';
 import { Nullable, HttpErrorException, toDto } from '@moonlightjs/common';
 import * as bcrypt from 'bcrypt';
@@ -48,7 +48,7 @@ export class AdminAuthenticationService {
     });
     if (user) {
       if (!user.password) {
-        throw new HttpErrorException(ErrorCodes.PasswordInvalid);
+        throw new HttpErrorException(AdminUserErrorCodes.PasswordInvalid);
       }
       const isPasswordMatching = await bcrypt.compare(
         input.password,
@@ -57,7 +57,7 @@ export class AdminAuthenticationService {
       if (isPasswordMatching) {
         return user;
       }
-      throw new HttpErrorException(ErrorCodes.PasswordInvalid);
+      throw new HttpErrorException(AdminUserErrorCodes.PasswordInvalid);
     }
     return null;
   }
@@ -110,7 +110,7 @@ export class AdminAuthenticationService {
         },
       });
       if (!user) {
-        throw new HttpErrorException(ErrorCodes.UserNotExists);
+        throw new HttpErrorException(AdminUserErrorCodes.UserNotExists);
       }
       const roles = user.roles ? user.roles.map((role) => role.code) : [];
       const permissions: string[] = [];

@@ -15,6 +15,9 @@ export class AdminRoleDto {
   @ApiProperty({ type: 'string', required: true, nullable: true })
   @Expose()
   public readonly description: string | null;
+  @ApiProperty({ type: 'boolean', required: true })
+  @Expose()
+  public readonly isSystem: boolean;
   @ApiProperty({ type: 'string', required: true })
   @Expose()
   public readonly createdAt: string;

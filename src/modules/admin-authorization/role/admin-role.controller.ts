@@ -23,6 +23,7 @@ import { UpdateAdminRoleInput } from '@modules/admin-authorization/role/dto/upda
 import {
   FindManyArgs,
   FindOneArgs,
+  HttpErrorException,
   OpenApiPaginationResponse,
   OpenApiResponse,
   SuccessResponseDto,
@@ -30,6 +31,8 @@ import {
 import { CreateAdminRoleInput } from '@modules/admin-authorization/role/dto/create-admin-role.input';
 import { AdminRoleService } from '@modules/admin-authorization/role/admin-role.service';
 import { AdminRoleDto } from '@modules/admin-authorization/role/dto/admin-role.dto';
+import { AdminUserErrorCodes, ADMIN_PERMISSIONS } from '@src/constants';
+import { RequireAdminPermissions } from '@modules/admin-authorization/permission';
 
 @ApiTags('role')
 @Controller({
@@ -48,6 +51,7 @@ export class AdminRoleController {
     status: HttpStatus.CREATED,
     model: AdminRoleDto,
   })
+  @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminRole.Create)
   @Post()
   create(
     @Body() createRoleInput: CreateAdminRoleInput,
@@ -68,6 +72,7 @@ export class AdminRoleController {
     model: AdminRoleDto,
     isArray: true,
   })
+  @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminRole.Read)
   @Get()
   findAll(@Query() params: Prisma.AdminRoleFindManyArgs) {
     return this.adminRoleService.findAll(params);
@@ -78,6 +83,7 @@ export class AdminRoleController {
   })
   @ApiBearerAuth()
   @OpenApiPaginationResponse(AdminRoleDto)
+  @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminRole.Read)
   @Get('/pagination')
   findAllPagination(@Query() params: Prisma.AdminRoleFindManyArgs) {
     return this.adminRoleService.findAllPagination(params);
@@ -88,6 +94,7 @@ export class AdminRoleController {
   })
   @ApiBearerAuth()
   @OpenApiResponse({ status: HttpStatus.OK, model: AdminRoleDto })
+  @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminRole.Read)
   @Get(':id')
   findOne(
     @Param('id') id: string,
@@ -101,12 +108,21 @@ export class AdminRoleController {
 
   @ApiBearerAuth()
   @OpenApiResponse({ status: HttpStatus.OK, model: AdminRoleDto })
+  @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminRole.Update)
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateRoleInput: UpdateAdminRoleInput,
     @Query() params: Omit<Prisma.AdminRoleUpdateArgs, 'data' | 'where'>,
   ) {
+    const adminRole = await this.adminRoleService.findOne({
+      where: { id },
+    });
+    if (adminRole.isSystem) {
+      throw new HttpErrorException(
+        AdminUserErrorCodes.SystemRoleCannotModified,
+      );
+    }
     return this.adminRoleService.update({
       ...params,
       where: {
@@ -120,8 +136,15 @@ export class AdminRoleController {
 
   @ApiBearerAuth()
   @ApiResponse({ status: HttpStatus.OK, type: SuccessResponseDto })
+  @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminRole.Delete)
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
+    const adminRole = await this.adminRoleService.findOne({
+      where: { id },
+    });
+    if (adminRole.isSystem) {
+      throw new HttpErrorException(AdminUserErrorCodes.SystemRoleCannotDeleted);
+    }
     return this.adminRoleService.remove({
       id,
     });

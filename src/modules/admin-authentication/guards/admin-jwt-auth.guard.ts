@@ -1,7 +1,7 @@
 import { ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
-import { ErrorCodes } from '@src/constants';
+import { AdminUserErrorCodes } from '@src/constants';
 import { HttpErrorException, IS_PUBLIC_KEY } from '@moonlightjs/common';
 
 @Injectable()
@@ -25,7 +25,7 @@ export class AdminJwtAuthGuard extends AuthGuard('admin-jwt') {
   handleRequest(err: any, user: any, info: any) {
     // You can throw an exception based on either "info" or "err" arguments
     if (err || !user) {
-      throw err || new HttpErrorException(ErrorCodes.Unauthorized);
+      throw err || new HttpErrorException(AdminUserErrorCodes.Unauthorized);
     }
     return user;
   }

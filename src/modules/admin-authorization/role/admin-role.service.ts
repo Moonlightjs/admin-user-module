@@ -11,14 +11,16 @@ export class AdminRoleService {
 
   async findOne(params: Prisma.AdminRoleFindFirstArgs) {
     const adminRole = await this.prisma.adminRole.findFirst(params);
-    return toDto(AdminRoleDto, adminRole);
+    return toDto<AdminRoleDto>(AdminRoleDto, adminRole);
   }
 
   async findAll(params: Prisma.AdminRoleFindManyArgs): Promise<AdminRoleDto[]> {
     params.skip = params.skip ?? DEFAULT_SKIP;
     params.take = params.take ?? DEFAULT_TAKE;
     const adminRoles = await this.prisma.adminRole.findMany(params);
-    return adminRoles.map((adminRole) => toDto(AdminRoleDto, adminRole));
+    return adminRoles.map((adminRole) =>
+      toDto<AdminRoleDto>(AdminRoleDto, adminRole),
+    );
   }
 
   async findAllPagination(
@@ -33,7 +35,9 @@ export class AdminRoleService {
       }),
     ]);
     return PagedResultDto.create({
-      data: adminRoles.map((adminRole) => toDto(AdminRoleDto, adminRole)),
+      data: adminRoles.map<AdminRoleDto>((adminRole) =>
+        toDto(AdminRoleDto, adminRole),
+      ),
       pagination: Pagination.create({
         take: params.take,
         skip: params.skip,
@@ -44,12 +48,12 @@ export class AdminRoleService {
 
   async create(params: Prisma.AdminRoleCreateArgs): Promise<AdminRoleDto> {
     const adminRole = await this.prisma.adminRole.create(params);
-    return toDto(AdminRoleDto, adminRole);
+    return toDto<AdminRoleDto>(AdminRoleDto, adminRole);
   }
 
   async update(params: Prisma.AdminRoleUpdateArgs): Promise<AdminRoleDto> {
     const adminRole = await this.prisma.adminRole.update(params);
-    return toDto(AdminRoleDto, adminRole);
+    return toDto<AdminRoleDto>(AdminRoleDto, adminRole);
   }
 
   async remove(where: Prisma.AdminRoleWhereUniqueInput): Promise<boolean> {
