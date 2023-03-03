@@ -7,9 +7,39 @@ import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { logQueryEvent, PrismaModule } from '@moonlightjs/common';
 
 @Module({
   imports: [
+    PrismaModule.forRoot({
+      isGlobal: true,
+      prismaServiceOptions: {
+        prismaOptions: {
+          log: [
+            {
+              emit: 'event',
+              level: 'query',
+            },
+            {
+              emit: 'stdout',
+              level: 'error',
+            },
+            {
+              emit: 'stdout',
+              level: 'info',
+            },
+            {
+              emit: 'stdout',
+              level: 'warn',
+            },
+          ],
+          errorFormat: 'colorless',
+        },
+        events: {
+          query: logQueryEvent,
+        },
+      },
+    }),
     AdminAuthenticationModule,
     AdminAuthorizationModule,
     AdminUserModule,

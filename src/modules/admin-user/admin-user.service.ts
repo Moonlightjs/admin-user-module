@@ -10,8 +10,8 @@ import {
   Pagination,
   toDto,
   HttpErrorException,
+  PrismaService,
 } from '@moonlightjs/common';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { AdminUserDto, AdminUserProfileDto } from './dto';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';

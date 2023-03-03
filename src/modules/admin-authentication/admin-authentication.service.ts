@@ -13,8 +13,12 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtSignOptions, JwtService } from '@nestjs/jwt';
 import { AdminUserErrorCodes } from '@src/constants';
-import { PrismaService } from '@src/infra/prisma/prisma.service';
-import { Nullable, HttpErrorException, toDto } from '@moonlightjs/common';
+import {
+  Nullable,
+  HttpErrorException,
+  toDto,
+  PrismaService,
+} from '@moonlightjs/common';
 import * as bcrypt from 'bcrypt';
 import { AdminUserProfileDto } from '@modules/admin-user/dto';
 

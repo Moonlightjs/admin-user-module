@@ -2,8 +2,12 @@ import { AdminRoleDto } from '@modules/admin-authorization/role/dto/admin-role.d
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { DEFAULT_SKIP, DEFAULT_TAKE } from '@src/constants';
-import { PrismaService } from '@src/infra/prisma/prisma.service';
-import { PagedResultDto, Pagination, toDto } from '@moonlightjs/common';
+import {
+  PagedResultDto,
+  Pagination,
+  PrismaService,
+  toDto,
+} from '@moonlightjs/common';
 
 @Injectable()
 export class AdminRoleService {

@@ -12,10 +12,11 @@ import {
   GlobalApiLoggerMiddleware,
   GlobalExceptionFilter,
   isDevelopment,
+  PrismaService,
   ResponseInterceptor,
   TransformInterceptor,
 } from '@moonlightjs/common';
-import { PrismaService } from '@src/infra/prisma/prisma.service';
+
 import { setupSwagger } from '@src/setup-swagger';
 
 const PORT = process.env.PORT || 1999;

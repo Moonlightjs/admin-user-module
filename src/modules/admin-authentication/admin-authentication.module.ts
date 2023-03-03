@@ -6,12 +6,10 @@ import {
   AdminJwtRefreshTokenStrategy,
   AdminJwtStrategy,
 } from '@modules/admin-authentication/strategies';
-import { AdminUserModule } from '@modules/admin-user/admin-user.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { PrismaService } from '@src/infra/prisma/prisma.service';
 
 @Module({
   controllers: [AdminAuthenticationController],
@@ -34,7 +32,6 @@ import { PrismaService } from '@src/infra/prisma/prisma.service';
   ],
   providers: [
     AdminAuthenticationService,
-    PrismaService,
     AdminLocalStrategy,
     AdminJwtStrategy,
     AdminJwtRefreshTokenStrategy,
