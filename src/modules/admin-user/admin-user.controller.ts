@@ -1,3 +1,17 @@
+import { AdminJwtAuthGuard } from '@modules/admin-authentication/guards/admin-jwt-auth.guard';
+import { AdminUser } from '@modules/admin-authentication/admin-user.decorator';
+import { RequireAdminPermissions } from '@modules/admin-authorization';
+import { CreateAdminUserInput } from '@modules/admin-user/dto';
+import { ChangeAdminPasswordInput } from '@modules/admin-user/dto/change-admin-password.input';
+import { UpdateAdminUserInput } from '@modules/admin-user/dto/update-admin-user.input';
+import {
+  FindManyArgs,
+  FindOneArgs,
+  IgnoreAuthorization,
+  OpenApiPaginationResponse,
+  OpenApiResponse,
+  SuccessResponseDto,
+} from '@moonlightjs/common';
 import {
   Body,
   Controller,
@@ -19,25 +33,11 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
+import { ADMIN_PERMISSIONS } from '@src/constants';
 import * as bcrypt from 'bcrypt';
 import { AdminJwtPayload } from '../admin-authentication/admin-jwt-payload';
-import { AdminUserDto } from './dto/admin-user.dto';
 import { AdminUserService } from './admin-user.service';
-import { AdminJwtAuthGuard } from '@modules/admin-authentication';
-import {
-  OpenApiResponse,
-  IgnoreAuthorization,
-  FindManyArgs,
-  OpenApiPaginationResponse,
-  FindOneArgs,
-  SuccessResponseDto,
-} from '@moonlightjs/common';
-import { UpdateAdminUserInput } from '@modules/admin-user/dto/update-admin-user.input';
-import { AdminUser } from '@modules/admin-authentication/admin-user.decorator';
-import { CreateAdminUserInput } from '@modules/admin-user/dto';
-import { ChangeAdminPasswordInput } from '@modules/admin-user/dto/change-admin-password.input';
-import { RequireAdminPermissions } from '@modules/admin-authorization';
-import { ADMIN_PERMISSIONS } from '@src/constants';
+import { AdminUserDto } from './dto/admin-user.dto';
 
 @ApiTags('admin-user')
 @Controller({

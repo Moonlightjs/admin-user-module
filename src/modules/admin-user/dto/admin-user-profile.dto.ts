@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { Nullable } from '@moonlightjs/common';
+import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 @Expose()
 export class AdminUserProfileDto {

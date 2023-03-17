@@ -1,12 +1,12 @@
 import { AdminPermissionDto } from '@modules/admin-authorization/permission/dto/admin-permission.dto';
-import { Injectable } from '@nestjs/common';
-import { AdminPermission, Prisma } from '@prisma/client';
 import {
   PagedResultDto,
   Pagination,
   PrismaService,
   toDto,
 } from '@moonlightjs/common';
+import { Injectable } from '@nestjs/common';
+import { AdminPermission, Prisma } from '@prisma/client';
 
 @Injectable()
 export class AdminPermissionService {

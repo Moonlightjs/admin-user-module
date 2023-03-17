@@ -1,8 +1,17 @@
-import { AdminJwtAuthGuard } from '@modules/admin-authentication';
+import { AdminJwtAuthGuard } from '@modules/admin-authentication/guards/admin-jwt-auth.guard';
 import { AdminPermissionService } from '@modules/admin-authorization/permission/admin-permission.service';
+import { RequireAdminPermissions } from '@modules/admin-authorization/permission/admin-permissions.decorator';
 import { AdminPermissionDto } from '@modules/admin-authorization/permission/dto/admin-permission.dto';
 import { CreateAdminPermissionInput } from '@modules/admin-authorization/permission/dto/create-admin-permission.input';
 import { UpdateAdminPermissionInput } from '@modules/admin-authorization/permission/dto/update-admin-permission.input';
+import {
+  FindManyArgs,
+  FindOneArgs,
+  HttpErrorException,
+  OpenApiPaginationResponse,
+  OpenApiResponse,
+  SuccessResponseDto,
+} from '@moonlightjs/common';
 import {
   Body,
   Controller,
@@ -23,16 +32,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
-import {
-  FindManyArgs,
-  FindOneArgs,
-  OpenApiPaginationResponse,
-  OpenApiResponse,
-  SuccessResponseDto,
-} from '@moonlightjs/common';
-import { RequireAdminPermissions } from '@modules/admin-authorization/permission/admin-permissions.decorator';
 import { ADMIN_PERMISSIONS } from '@src/constants/admin-permission';
-import { HttpErrorException } from '@moonlightjs/common';
 import { AdminUserErrorCodes } from '@src/constants/error-codes';
 
 @ApiTags('admin-permission')

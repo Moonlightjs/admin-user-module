@@ -2,11 +2,11 @@ import { AdminRoleId } from '@modules/admin-user/dto/create-admin-user.input';
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 import {
+  IsArray,
   IsNotEmpty,
   IsOptional,
   IsString,
   ValidateNested,
-  IsArray
 } from 'class-validator';
 
 @Expose()

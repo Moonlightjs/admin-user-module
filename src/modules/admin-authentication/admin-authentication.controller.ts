@@ -7,16 +7,16 @@ import {
 import { AdminRefreshTokenDto } from '@modules/admin-authentication/dto/admin-refresh-token.dto';
 import { AdminLocalAuthGuard } from '@modules/admin-authentication/guards';
 import AdminJwtRefreshGuard from '@modules/admin-authentication/guards/admin-jwt-refresh.guard';
+import { OpenApiResponse } from '@moonlightjs/common';
 import {
   Controller,
   HttpCode,
   HttpStatus,
   Post,
-  UseGuards,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
-import { OpenApiResponse } from '@moonlightjs/common';
 
 @ApiTags('admin-auth')
 @Controller({

@@ -1,5 +1,5 @@
-import { HttpStatus } from '@nestjs/common';
 import { ErrorCode } from '@moonlightjs/common';
+import { HttpStatus } from '@nestjs/common';
 const PREFIX_MODULE_NAME = 'ADMIN_USER';
 const AdminUserErrorCodes: Record<string, ErrorCode> = {
   // Authorization error

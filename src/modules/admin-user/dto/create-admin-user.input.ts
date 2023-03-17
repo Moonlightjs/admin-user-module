@@ -1,12 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 import {
+  IsArray,
   IsNotEmpty,
   IsOptional,
   IsString,
   IsUUID,
   ValidateNested,
-  IsArray,
 } from 'class-validator';
 
 @Expose()

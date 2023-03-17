@@ -7,5 +7,6 @@ import { AdminUserService } from './admin-user.service';
   imports: [ConfigModule],
   controllers: [AdminUserController],
   providers: [AdminUserService],
+  exports: [AdminUserService],
 })
 export class AdminUserModule {}

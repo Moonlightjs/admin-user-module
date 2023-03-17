@@ -1,13 +1,13 @@
 import { AdminAuthenticationModule } from '@modules/admin-authentication/admin-authentication.module';
-import { AdminPermissionsGuard } from '@modules/admin-authorization/permission';
 import { AdminAuthorizationModule } from '@modules/admin-authorization/admin-authorization.module';
+import { AdminPermissionsGuard } from '@modules/admin-authorization/permission';
 import { AdminRolesGuard } from '@modules/admin-authorization/role';
 import { AdminUserModule } from '@modules/admin-user/admin-user.module';
+import { logQueryEvent, PrismaModule } from '@moonlightjs/common';
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { logQueryEvent, PrismaModule } from '@moonlightjs/common';
 
 @Module({
   imports: [

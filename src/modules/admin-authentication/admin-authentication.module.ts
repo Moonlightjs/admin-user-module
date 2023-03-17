@@ -2,9 +2,9 @@ import { AdminAuthenticationController } from '@modules/admin-authentication/adm
 import { AdminAuthenticationService } from '@modules/admin-authentication/admin-authentication.service';
 import { adminAccessTokenOption } from '@modules/admin-authentication/admin-jwt-sign-option';
 import {
-  AdminLocalStrategy,
   AdminJwtRefreshTokenStrategy,
   AdminJwtStrategy,
+  AdminLocalStrategy,
 } from '@modules/admin-authentication/strategies';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';

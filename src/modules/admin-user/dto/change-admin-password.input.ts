@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { Match } from '@moonlightjs/common';
+import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 import { IsNotEmpty, IsString } from 'class-validator';
 

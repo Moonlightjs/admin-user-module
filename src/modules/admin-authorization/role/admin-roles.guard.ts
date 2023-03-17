@@ -1,7 +1,7 @@
 import { ADMIN_ROLES_KEY } from '@modules/admin-authorization/role/admin-roles.decorator';
+import { IS_IGNORE_AUTHORIZATION } from '@moonlightjs/common';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { IS_IGNORE_AUTHORIZATION } from '@moonlightjs/common';
 
 @Injectable()
 export class AdminRolesGuard implements CanActivate {

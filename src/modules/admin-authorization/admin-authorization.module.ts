@@ -7,5 +7,6 @@ import { Module } from '@nestjs/common';
 @Module({
   controllers: [AdminRoleController, AdminPermissionController],
   providers: [AdminRoleService, AdminPermissionService],
+  exports: [AdminRoleService, AdminPermissionService],
 })
 export class AdminAuthorizationModule {}

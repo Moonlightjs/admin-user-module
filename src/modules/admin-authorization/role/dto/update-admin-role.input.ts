@@ -1,6 +1,6 @@
 import {
-  CreateAdminRoleInput,
   AdminPermissionId,
+  CreateAdminRoleInput,
 } from '@modules/admin-authorization/role/dto/create-admin-role.input';
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';

@@ -1,6 +1,6 @@
 import { AdminRoleDto } from '@modules/admin-authorization/role/dto/admin-role.dto';
-import { ApiProperty } from '@nestjs/swagger';
 import { Nullable } from '@moonlightjs/common';
+import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 
 @Expose()

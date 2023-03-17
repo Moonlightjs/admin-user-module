@@ -1,6 +1,6 @@
+import { IS_IGNORE_AUTHORIZATION } from '@moonlightjs/common';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { IS_IGNORE_AUTHORIZATION } from '@moonlightjs/common';
 import { ADMIN_REQUIRE_PERMISSIONS_KEY } from './admin-permissions.decorator';
 
 @Injectable()

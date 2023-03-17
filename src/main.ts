@@ -1,12 +1,3 @@
-import * as moduleAlias from 'module-alias';
-moduleAlias.addAliases({
-  '@modules': `${__dirname}/modules`,
-  '@src': `${__dirname}`,
-});
-import { ValidationPipe, VersioningType } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from '@src/app.module';
-import * as httpContext from 'express-http-context';
 import {
   FilterPipe,
   GlobalApiLoggerMiddleware,
@@ -16,6 +7,15 @@ import {
   ResponseInterceptor,
   TransformInterceptor,
 } from '@moonlightjs/common';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from '@src/app.module';
+import * as httpContext from 'express-http-context';
+import * as moduleAlias from 'module-alias';
+moduleAlias.addAliases({
+  '@modules': `${__dirname}/modules`,
+  '@src': `${__dirname}`,
+});
 
 import { setupSwagger } from '@src/setup-swagger';
 
