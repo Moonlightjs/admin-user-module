@@ -1,6 +1,6 @@
 {
   "name": "@moonlightjs/admin-user-module",
-  "version": "0.1.1-beta.2",
+  "version": "0.1.1-beta.3",
   "main": "index.js",
   "types": "index.d.ts",
   "repository": {
@@ -19,7 +19,7 @@
   "description": "",
   "license": "ISC",
   "scripts": {
-    "release": "standard-version && git push --follow-tags && npm run module && cd module && npm publish --access public",
+    "release": "standard-version -a && git push --follow-tags && npm run module && cd module && npm publish --access public",
     "prerelease-alpha": "standard-version --prerelease alpha && git push --follow-tags && npm run module && cd module && npm publish --access public",
     "prerelease-beta": "standard-version -a --prerelease beta && git push --follow-tags && npm run module && cd module && npm publish --access public",
     "prebuild": "rimraf dist",
@@ -41,7 +41,7 @@
     "seed:prod": "node ./dist/prisma/seed.js"
   },
   "dependencies": {
-    "@moonlightjs/common": "/Users/thawng/Desktop/source/Moonlightjs/common/module",
+    "@moonlightjs/common": "0.1.2-beta.1",
     "@moonlightjs/pbac": "0.1.1-0",
     "@nestjs/common": "^9.3.9",
     "@nestjs/config": "^2.3.1",
