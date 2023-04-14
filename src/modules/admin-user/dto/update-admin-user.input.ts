@@ -1,37 +1,27 @@
-import { AdminRoleId } from '@modules/admin-user/dto/create-admin-user.input';
+import { AdminPolicyUpdateNesteds } from '@modules/admin-authorization/policy/dto/admin-policy-nested.input';
+import { AdminRoleUpdateNesteds } from '@modules/admin-authorization/role/dto/admin-role-nested.input';
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 import {
-  IsArray,
   IsNotEmpty,
   IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
 
-@Expose()
-export class AdminRoleUpdateNested {
-  @ApiProperty({ required: true, isArray: true, type: AdminRoleId })
-  @ValidateNested()
-  @IsArray()
-  @Type(() => AdminRoleId)
-  @Expose()
-  set: AdminRoleId[];
-}
-
 export class UpdateAdminUserInput {
-  @ApiProperty({ required: false, nullable: true })
+  @ApiProperty({ required: false, nullable: true, type: String })
   @IsString()
   @IsNotEmpty()
   @Expose()
   public readonly email?: string;
 
-  @ApiProperty({ required: false, nullable: true })
+  @ApiProperty({ required: false, nullable: true, type: String })
   @IsString()
   @Expose()
   public readonly firstName?: string;
 
-  @ApiProperty({ required: false, nullable: true })
+  @ApiProperty({ required: false, nullable: true, type: String })
   @IsOptional()
   @IsString()
   @IsNotEmpty()
@@ -45,9 +35,15 @@ export class UpdateAdminUserInput {
   @Expose()
   public readonly displayName?: string;
 
-  @ApiProperty({ required: false })
+  @ApiProperty({ required: false, type: () => AdminRoleUpdateNesteds })
   @ValidateNested()
-  @Type(() => AdminRoleUpdateNested)
+  @Type(() => AdminRoleUpdateNesteds)
   @Expose()
-  public readonly roles?: AdminRoleUpdateNested;
+  public readonly roles?: AdminRoleUpdateNesteds;
+
+  @ApiProperty({ required: false, type: () => AdminPolicyUpdateNesteds })
+  @ValidateNested()
+  @Type(() => AdminPolicyUpdateNesteds)
+  @Expose()
+  public readonly policies?: AdminPolicyUpdateNesteds;
 }

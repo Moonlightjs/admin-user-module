@@ -13,16 +13,10 @@ export class AdminLocalStrategy extends PassportStrategy(
   constructor(
     protected _adminAuthenticationService: AdminAuthenticationService,
   ) {
-    super({
-      passReqToCallback: true,
-    });
+    super();
   }
 
-  async validate(
-    request: any,
-    username: string,
-    password: string,
-  ): Promise<any> {
+  async validate(username: string, password: string): Promise<any> {
     const user = await this._adminAuthenticationService.validateUser({
       username,
       password,
@@ -36,6 +30,6 @@ export class AdminLocalStrategy extends PassportStrategy(
     if (user?.deletedAt) {
       throw new HttpErrorException(AdminUserErrorCodes.UserDeleted);
     }
-    request.userAdmin = user;
+    return user;
   }
 }

@@ -4,7 +4,7 @@ import { IsString } from 'class-validator';
 
 @Expose()
 export class AdminRefreshTokenInput {
-  @ApiProperty({ required: true })
+  @ApiProperty({ required: true, type: String })
   @IsString()
   @Expose()
   refreshToken: string;

@@ -5,24 +5,24 @@ import { IsJSON, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 @Expose()
 export class CreateAdminPermissionInput {
-  @ApiProperty({ required: true })
+  @ApiProperty({ required: true, type: String })
   @IsString()
   @IsNotEmpty()
   @Expose()
   public readonly action: string;
-  @ApiProperty({ required: true })
+  @ApiProperty({ required: true, type: String })
   @IsString()
   @IsOptional()
   @Expose()
   public readonly subject?: string | null;
-  @ApiProperty({ required: false })
+  @ApiProperty({ required: false, type: Object })
   @IsJSON()
   @IsOptional()
   @Expose()
   public readonly properties?:
     | Prisma.InputJsonValue
     | Prisma.NullableJsonNullValueInput;
-  @ApiProperty({ required: false })
+  @ApiProperty({ required: false, type: Object })
   @IsJSON()
   @IsOptional()
   @Expose()

@@ -18,11 +18,10 @@ export class AdminJwtRefreshTokenStrategy extends PassportStrategy(
         },
       ]),
       secretOrKey: configService.get('ADMIN_JWT_REFRESH_TOKEN_SECRET_KEY'),
-      passReqToCallback: true,
     });
   }
 
-  async validate(request: any, payload: AdminJwtPayload) {
-    request.userAdmin = payload;
+  async validate(payload: AdminJwtPayload) {
+    return payload;
   }
 }

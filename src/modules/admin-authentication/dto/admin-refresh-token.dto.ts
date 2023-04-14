@@ -3,10 +3,10 @@ import { Expose } from 'class-transformer';
 
 @Expose()
 export class AdminRefreshTokenDto {
-  @ApiProperty({ type: 'string', required: true })
+  @ApiProperty({ type: String, required: true })
   @Expose()
   public readonly accessToken: string;
-  @ApiProperty({ type: 'string', required: true })
+  @ApiProperty({ type: String, required: true })
   @Expose()
   public readonly refreshToken: string;
 }

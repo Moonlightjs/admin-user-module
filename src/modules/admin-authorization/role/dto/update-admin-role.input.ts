@@ -1,27 +1,16 @@
-import {
-  AdminPermissionId,
-  CreateAdminRoleInput,
-} from '@modules/admin-authorization/role/dto/create-admin-role.input';
+import { AdminPolicyUpdateNesteds } from '@modules/admin-authorization/policy/dto/admin-policy-nested.input';
+import { CreateAdminRoleInput } from '@modules/admin-authorization/role/dto/create-admin-role.input';
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
-import { IsArray, IsOptional, ValidateNested } from 'class-validator';
-
-export class AdminPermissionsUpdateNested {
-  @ApiProperty({ required: false, isArray: true, type: AdminPermissionId })
-  @ValidateNested({ each: true })
-  @IsArray()
-  @IsOptional()
-  @Type(() => AdminPermissionId)
-  set?: AdminPermissionId[];
-}
+import { ValidateNested } from 'class-validator';
 
 @Expose()
 export class UpdateAdminRoleInput extends PartialType(
-  OmitType(CreateAdminRoleInput, ['permissions']),
+  OmitType(CreateAdminRoleInput, ['policies']),
 ) {
-  @ApiProperty({ required: true })
+  @ApiProperty({ required: true, type: () => AdminPolicyUpdateNesteds })
   @ValidateNested()
-  @Type(() => AdminPermissionsUpdateNested)
+  @Type(() => AdminPolicyUpdateNesteds)
   @Expose()
-  public readonly permissions: AdminPermissionsUpdateNested;
+  public readonly policies: AdminPolicyUpdateNesteds;
 }

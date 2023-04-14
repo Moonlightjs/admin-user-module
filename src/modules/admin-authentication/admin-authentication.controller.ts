@@ -39,7 +39,7 @@ export class AdminAuthenticationController {
   @Post('login')
   @HttpCode(HttpStatus.OK)
   async login(@Req() req: any) {
-    return this._adminAuthenticationService.login(req.adminUser);
+    return this._adminAuthenticationService.login(req.user);
   }
 
   @ApiBody({
@@ -52,6 +52,6 @@ export class AdminAuthenticationController {
   @UseGuards(AdminJwtRefreshGuard)
   @Post('refresh-token')
   async refreshToken(@Req() req: any) {
-    return this._adminAuthenticationService.refreshToken(req.adminUser);
+    return this._adminAuthenticationService.refreshToken(req.user);
   }
 }

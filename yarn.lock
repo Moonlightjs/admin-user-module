@@ -695,10 +695,8 @@
     semver "^7.3.5"
     tar "^6.1.11"
 
-"@moonlightjs/common@0.1.2-beta.0":
+"@moonlightjs/common@/Users/thawng/Desktop/source/Moonlightjs/common/module":
   version "0.1.2-beta.0"
-  resolved "https://registry.npmjs.org/@moonlightjs/common/-/common-0.1.2-beta.0.tgz"
-  integrity sha512-EkmEpO+YdgqiW8qswNZgbQSPZlrZXp3KQwxoi7Sk/MyCGzwmYfWIKJ6AML3/s89xaJG+voUhoVufx0Pgu/KI0Q==
   dependencies:
     "@nestjs/common" "^9.3.9"
     "@nestjs/core" "^9.3.9"
@@ -710,9 +708,31 @@
     module-alias "^2.2.2"
     prisma "^4.11.0"
     reflect-metadata "^0.1.13"
-    rimraf "^4.2.0"
     rxjs "^7.8.0"
     uuid "^9.0.0"
+
+"@moonlightjs/common@file:../common/module":
+  version "0.1.2-beta.0"
+  dependencies:
+    "@nestjs/common" "^9.3.9"
+    "@nestjs/core" "^9.3.9"
+    "@nestjs/swagger" "^6.2.1"
+    "@prisma/client" "^4.11.0"
+    class-transformer "^0.5.1"
+    class-validator "^0.14.0"
+    express-http-context "^1.2.4"
+    module-alias "^2.2.2"
+    prisma "^4.11.0"
+    reflect-metadata "^0.1.13"
+    rxjs "^7.8.0"
+    uuid "^9.0.0"
+
+"@moonlightjs/pbac@file:../pbac/module":
+  version "0.1.0"
+  dependencies:
+    ipcheck "^0.1.0"
+    lodash "^4.17.21"
+    z-schema "^5.0.5"
 
 "@nestjs/cli@^9.2.0":
   version "9.2.0"
@@ -2049,6 +2069,11 @@ commander@^2.20.0:
   version "2.20.3"
   resolved "https://registry.npmjs.org/commander/-/commander-2.20.3.tgz"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
+
+commander@^9.4.1:
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-9.5.0.tgz#bc08d1eb5cedf7ccb797a96199d41c7bc3e60d30"
+  integrity sha512-KRs7WVDKg86PWiuAqhDrAQnTXZKraVcCc6vFdL14qrZ/DcWwuRo7VoiYXalXO7S5GKpqYiVEwCbgFDfxNHKJBQ==
 
 compare-func@^2.0.0:
   version "2.0.0"
@@ -3418,6 +3443,11 @@ ipaddr.js@1.9.1:
   resolved "https://registry.npmjs.org/ipaddr.js/-/ipaddr.js-1.9.1.tgz"
   integrity sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==
 
+ipcheck@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/ipcheck/-/ipcheck-0.1.0.tgz#a6f942228910010f1688117b7a774b39c5222f81"
+  integrity sha512-NwhrmROU0iXKa+U1quGuQ+ag+K/1Bb5V/yh5Q4SylSu/LGymPZcWB7p4u7JgJH0qOR6cTLDO5VZlRbhoeekNzQ==
+
 is-arrayish@^0.2.1:
   version "0.2.1"
   resolved "https://registry.npmjs.org/is-arrayish/-/is-arrayish-0.2.1.tgz"
@@ -4117,6 +4147,16 @@ locate-path@^6.0.0:
   dependencies:
     p-locate "^5.0.0"
 
+lodash.get@^4.4.2:
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
+  integrity sha512-z+Uw/vLuy6gQe8cfaFWD7p0wVv8fJl3mbzXh33RS+0oW2wvUqiRXiQ69gLWSLpgB5/6sU+r6BlQR0MBILadqTQ==
+
+lodash.isequal@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
+  integrity sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==
+
 lodash.ismatch@^4.4.0:
   version "4.4.0"
   resolved "https://registry.npmjs.org/lodash.ismatch/-/lodash.ismatch-4.4.0.tgz"
@@ -4132,7 +4172,7 @@ lodash.merge@^4.6.2:
   resolved "https://registry.npmjs.org/lodash.merge/-/lodash.merge-4.6.2.tgz"
   integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
 
-lodash@4.17.21, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.21:
+lodash@4.17.21, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.21, lodash@^4.17.4:
   version "4.17.21"
   resolved "https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -4993,6 +5033,13 @@ rechoir@^0.6.2:
   integrity sha512-HFM8rkZ+i3zrV+4LQjwQ0W+ez98pApMGM3HUrN04j3CqzPOzl9nmP15Y8YXNm8QHGv/eacOVEjqhmWpkRV0NAw==
   dependencies:
     resolve "^1.1.6"
+
+reconfig@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/reconfig/-/reconfig-3.3.0.tgz#8d43b5b6fe1dd83e086dcdf4b2d16525a5366b81"
+  integrity sha512-xUTYWvDMws1SB7JCo1eRXErWmq6gO1fMOaZE3OGph28RCvpdlHwcJEunBAz+wosimFqh2HWX/M30xfvdWNJYSA==
+  dependencies:
+    lodash "^4.17.4"
 
 redent@^3.0.0:
   version "3.0.0"
@@ -6046,3 +6093,14 @@ yocto-queue@^0.1.0:
   version "0.1.0"
   resolved "https://registry.npmjs.org/yocto-queue/-/yocto-queue-0.1.0.tgz"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
+
+z-schema@^5.0.5:
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/z-schema/-/z-schema-5.0.5.tgz#6805a48c5366a6125cae0e58752babfd503daf32"
+  integrity sha512-D7eujBWkLa3p2sIpJA0d1pr7es+a7m0vFAnZLlCEKq/Ij2k0MLi9Br2UPxoxdYystm5K1yeBGzub0FlYUEWj2Q==
+  dependencies:
+    lodash.get "^4.4.2"
+    lodash.isequal "^4.5.0"
+    validator "^13.7.0"
+  optionalDependencies:
+    commander "^9.4.1"

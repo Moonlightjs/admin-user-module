@@ -43,11 +43,7 @@ export class AdminAuthenticationService {
         username: input.username,
       },
       include: {
-        roles: {
-          include: {
-            permissions: true,
-          },
-        },
+        roles: true,
       },
     });
     if (user) {
@@ -78,17 +74,17 @@ export class AdminAuthenticationService {
       })
       .then();
     const roles = user.roles ? user.roles.map((role) => role.code) : [];
-    const permissions: string[] = [];
-    user.roles.forEach((role) => {
-      role.permissions.forEach((permission) => {
-        permissions.push(permission.action);
-      });
-    });
+    // const permissions: string[] = [];
+    // user.roles.forEach((role) => {
+    //   role.permissions.forEach((permission) => {
+    //     permissions.push(permission.action);
+    //   });
+    // });
     const payload: AdminJwtPayload = {
       username: user.username,
       sub: user.id,
       roles,
-      permissions,
+      // permissions,
     };
     return {
       accessToken: this.jwtService.sign(payload),

@@ -5,16 +5,16 @@ import { IsNotEmpty, IsString } from 'class-validator';
 
 @Expose()
 export class ChangeAdminPasswordInput {
-  @ApiProperty({ required: true })
+  @ApiProperty({ required: true, type: String })
   @IsNotEmpty()
   @IsString()
   public readonly currentPassword: string;
-  @ApiProperty({ required: true })
+  @ApiProperty({ required: true, type: String })
   @IsNotEmpty()
   @IsString()
   @Expose()
   public readonly newPassword: string;
-  @ApiProperty({ required: true })
+  @ApiProperty({ required: true, type: String })
   @Match(ChangeAdminPasswordInput, 'newPassword')
   @IsNotEmpty()
   @IsString()

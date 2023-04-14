@@ -1,5 +1,4 @@
 import { AdminJwtAuthGuard } from '@modules/admin-authentication/guards/admin-jwt-auth.guard';
-import { RequireAdminPermissions } from '@modules/admin-authorization/permission';
 import { AdminRoleService } from '@modules/admin-authorization/role/admin-role.service';
 import { AdminRoleDto } from '@modules/admin-authorization/role/dto/admin-role.dto';
 import { CreateAdminRoleInput } from '@modules/admin-authorization/role/dto/create-admin-role.input';
@@ -32,14 +31,17 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
-import { AdminUserErrorCodes, ADMIN_PERMISSIONS } from '@src/constants';
+import { AdminUserErrorCodes } from '@src/constants';
+import { AdminPoliciesGuard } from '@modules/admin-authorization/policy/admin-policy.guard';
+import { AdminCheckPolicies } from '@modules/admin-authorization/policy/admin-policy.decorator';
+import { Actions, Resources } from '@src/constants/auth';
 
 @ApiTags('role')
 @Controller({
   path: 'roles',
   version: '1',
 })
-@UseGuards(AdminJwtAuthGuard)
+@UseGuards(AdminJwtAuthGuard, AdminPoliciesGuard)
 export class AdminRoleController {
   constructor(protected readonly adminRoleService: AdminRoleService) {}
 
@@ -51,7 +53,12 @@ export class AdminRoleController {
     status: HttpStatus.CREATED,
     model: AdminRoleDto,
   })
-  @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminRole.Create)
+  @AdminCheckPolicies({
+    action: Actions.AdminRoles.CreateRole,
+    resource: Resources.adminRoles({
+      roleId: '.roleId',
+    }),
+  })
   @Post()
   create(
     @Body() createRoleInput: CreateAdminRoleInput,
@@ -72,7 +79,12 @@ export class AdminRoleController {
     model: AdminRoleDto,
     isArray: true,
   })
-  @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminRole.Read)
+  @AdminCheckPolicies({
+    action: Actions.AdminRoles.ReadRole,
+    resource: Resources.adminRoles({
+      roleId: '.roleId',
+    }),
+  })
   @Get()
   findAll(@Query() params: Prisma.AdminRoleFindManyArgs) {
     return this.adminRoleService.findAll(params);
@@ -83,7 +95,12 @@ export class AdminRoleController {
   })
   @ApiBearerAuth()
   @OpenApiPaginationResponse(AdminRoleDto)
-  @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminRole.Read)
+  @AdminCheckPolicies({
+    action: Actions.AdminRoles.ReadRole,
+    resource: Resources.adminRoles({
+      roleId: '.roleId',
+    }),
+  })
   @Get('/pagination')
   findAllPagination(@Query() params: Prisma.AdminRoleFindManyArgs) {
     return this.adminRoleService.findAllPagination(params);
@@ -94,7 +111,12 @@ export class AdminRoleController {
   })
   @ApiBearerAuth()
   @OpenApiResponse({ status: HttpStatus.OK, model: AdminRoleDto })
-  @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminRole.Read)
+  @AdminCheckPolicies({
+    action: Actions.AdminRoles.ReadRole,
+    resource: Resources.adminRoles({
+      roleId: '.roleId',
+    }),
+  })
   @Get(':id')
   findOne(
     @Param('id') id: string,
@@ -108,7 +130,12 @@ export class AdminRoleController {
 
   @ApiBearerAuth()
   @OpenApiResponse({ status: HttpStatus.OK, model: AdminRoleDto })
-  @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminRole.Update)
+  @AdminCheckPolicies({
+    action: Actions.AdminRoles.UpdateRole,
+    resource: Resources.adminRoles({
+      roleId: '.roleId',
+    }),
+  })
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -136,7 +163,12 @@ export class AdminRoleController {
 
   @ApiBearerAuth()
   @ApiResponse({ status: HttpStatus.OK, type: SuccessResponseDto })
-  @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminRole.Delete)
+  @AdminCheckPolicies({
+    action: Actions.AdminRoles.DeleteRole,
+    resource: Resources.adminRoles({
+      roleId: '.roleId',
+    }),
+  })
   @Delete(':id')
   async remove(@Param('id') id: string) {
     const adminRole = await this.adminRoleService.findOne({

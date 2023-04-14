@@ -1,9 +1,9 @@
 import { AdminJwtAuthGuard } from '@modules/admin-authentication/guards/admin-jwt-auth.guard';
-import { AdminPermissionService } from '@modules/admin-authorization/permission/admin-permission.service';
-import { RequireAdminPermissions } from '@modules/admin-authorization/permission/admin-permissions.decorator';
-import { AdminPermissionDto } from '@modules/admin-authorization/permission/dto/admin-permission.dto';
-import { CreateAdminPermissionInput } from '@modules/admin-authorization/permission/dto/create-admin-permission.input';
-import { UpdateAdminPermissionInput } from '@modules/admin-authorization/permission/dto/update-admin-permission.input';
+import { AdminPermissionService } from './admin-permission.service';
+import { RequireAdminPermissions } from './admin-permissions.decorator';
+import { AdminPermissionDto } from './dto/admin-permission.dto';
+import { CreateAdminPermissionInput } from './dto/create-admin-permission.input';
+import { UpdateAdminPermissionInput } from './dto/update-admin-permission.input';
 import {
   FindManyArgs,
   FindOneArgs,
@@ -27,6 +27,7 @@ import {
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiOperation,
   ApiQuery,
   ApiResponse,
   ApiTags,
@@ -44,6 +45,7 @@ import { AdminUserErrorCodes } from '@src/constants/error-codes';
 export class AdminPermissionController {
   constructor(protected readonly permissionService: AdminPermissionService) {}
 
+  @ApiOperation({ deprecated: true })
   @ApiBearerAuth()
   @ApiBody({
     type: CreateAdminPermissionInput,
@@ -66,6 +68,7 @@ export class AdminPermissionController {
     });
   }
 
+  @ApiOperation({ deprecated: true })
   @ApiQuery({
     type: FindManyArgs,
   })
@@ -81,6 +84,7 @@ export class AdminPermissionController {
     return this.permissionService.findAll(params);
   }
 
+  @ApiOperation({ deprecated: true })
   @ApiQuery({
     type: FindManyArgs,
   })
@@ -92,6 +96,7 @@ export class AdminPermissionController {
     return this.permissionService.findAllPagination(params);
   }
 
+  @ApiOperation({ deprecated: true })
   @ApiQuery({
     type: FindOneArgs,
   })
@@ -109,6 +114,7 @@ export class AdminPermissionController {
     return this.permissionService.findOne(params);
   }
 
+  @ApiOperation({ deprecated: true })
   @ApiBearerAuth()
   @OpenApiResponse({ status: HttpStatus.OK, model: AdminPermissionDto })
   @ApiBody({
@@ -140,6 +146,7 @@ export class AdminPermissionController {
     });
   }
 
+  @ApiOperation({ deprecated: true })
   @ApiBearerAuth()
   @ApiResponse({ status: HttpStatus.OK, type: SuccessResponseDto })
   @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminPermission.Delete)

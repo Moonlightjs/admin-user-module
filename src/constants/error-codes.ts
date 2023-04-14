@@ -8,6 +8,11 @@ const AdminUserErrorCodes: Record<string, ErrorCode> = {
     statusCode: HttpStatus.UNAUTHORIZED,
     message: 'Unauthorized',
   },
+  PermissionDenied: {
+    code: `${PREFIX_MODULE_NAME}:100001`,
+    statusCode: HttpStatus.UNAUTHORIZED,
+    message: 'Permission denied',
+  },
   // User error
   UserDeactivated: {
     code: `${PREFIX_MODULE_NAME}:200000`,
@@ -75,6 +80,27 @@ const AdminUserErrorCodes: Record<string, ErrorCode> = {
     code: `${PREFIX_MODULE_NAME}:400003`,
     statusCode: HttpStatus.BAD_REQUEST,
     message: 'System role cannot deleted',
+  },
+  // Policy error
+  PolicyNotExists: {
+    code: `${PREFIX_MODULE_NAME}:300000`,
+    statusCode: HttpStatus.NOT_FOUND,
+    message: 'Policy not exists',
+  },
+  PolicyAlreadyExists: {
+    code: `${PREFIX_MODULE_NAME}:300001`,
+    statusCode: HttpStatus.BAD_REQUEST,
+    message: 'Policy already exists',
+  },
+  SystemPolicyCannotModified: {
+    code: `${PREFIX_MODULE_NAME}:300002`,
+    statusCode: HttpStatus.BAD_REQUEST,
+    message: 'System policy cannot modified',
+  },
+  SystemPolicyCannotDeleted: {
+    code: `${PREFIX_MODULE_NAME}:300003`,
+    statusCode: HttpStatus.BAD_REQUEST,
+    message: 'System policy cannot deleted',
   },
 };
 export { AdminUserErrorCodes };

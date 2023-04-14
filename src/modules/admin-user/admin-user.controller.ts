@@ -1,6 +1,5 @@
 import { AdminJwtAuthGuard } from '@modules/admin-authentication/guards/admin-jwt-auth.guard';
 import { AdminUser } from '@modules/admin-authentication/admin-user.decorator';
-import { RequireAdminPermissions } from '@modules/admin-authorization';
 import { CreateAdminUserInput } from '@modules/admin-user/dto';
 import { ChangeAdminPasswordInput } from '@modules/admin-user/dto/change-admin-password.input';
 import { UpdateAdminUserInput } from '@modules/admin-user/dto/update-admin-user.input';
@@ -33,18 +32,20 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
-import { ADMIN_PERMISSIONS } from '@src/constants';
+import { ADMIN_PERMISSIONS, Actions, Resources } from '@src/constants';
 import * as bcrypt from 'bcrypt';
 import { AdminJwtPayload } from '../admin-authentication/admin-jwt-payload';
 import { AdminUserService } from './admin-user.service';
 import { AdminUserDto } from './dto/admin-user.dto';
+import { AdminPoliciesGuard } from '@modules/admin-authorization/policy/admin-policy.guard';
+import { AdminCheckPolicies } from '@modules/admin-authorization/policy/admin-policy.decorator';
 
 @ApiTags('admin-user')
 @Controller({
   path: 'admin/users',
   version: '1',
 })
-@UseGuards(AdminJwtAuthGuard)
+@UseGuards(AdminJwtAuthGuard, AdminPoliciesGuard)
 export class AdminUserController {
   constructor(protected readonly adminUserService: AdminUserService) {}
 
@@ -87,7 +88,12 @@ export class AdminUserController {
     status: HttpStatus.CREATED,
     model: AdminUserDto,
   })
-  @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminUser.Create)
+  @AdminCheckPolicies({
+    action: Actions.AdminUsers.CreateUser,
+    resource: Resources.adminUsers({
+      userId: '.userId',
+    }),
+  })
   @Post()
   async create(
     @Body() createAdminUserInput: CreateAdminUserInput,
@@ -114,7 +120,12 @@ export class AdminUserController {
     model: AdminUserDto,
     isArray: true,
   })
-  @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminRole.Read)
+  @AdminCheckPolicies({
+    action: Actions.AdminUsers.ReadUser,
+    resource: Resources.adminUsers({
+      userId: '.userId',
+    }),
+  })
   @Get()
   findAll(@Query() params: Prisma.AdminUserFindManyArgs) {
     return this.adminUserService.findAll(params);
@@ -125,7 +136,12 @@ export class AdminUserController {
   })
   @ApiBearerAuth()
   @OpenApiPaginationResponse(AdminUserDto)
-  @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminRole.Read)
+  @AdminCheckPolicies({
+    action: Actions.AdminUsers.ReadUser,
+    resource: Resources.adminUsers({
+      userId: '.userId',
+    }),
+  })
   @Get('/pagination')
   findAllPagination(@Query() params: Prisma.AdminUserFindManyArgs) {
     return this.adminUserService.findAllPagination(params);
@@ -136,7 +152,12 @@ export class AdminUserController {
   })
   @ApiBearerAuth()
   @OpenApiResponse({ status: HttpStatus.OK, model: AdminUserDto })
-  @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminRole.Read)
+  @AdminCheckPolicies({
+    action: Actions.AdminUsers.ReadUser,
+    resource: Resources.adminUsers({
+      userId: '.userId',
+    }),
+  })
   @Get(':id')
   findOne(
     @Param('id') id: string,
@@ -150,7 +171,12 @@ export class AdminUserController {
 
   @ApiBearerAuth()
   @ApiResponse({ status: HttpStatus.OK, type: SuccessResponseDto })
-  @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminRole.Update)
+  @AdminCheckPolicies({
+    action: Actions.AdminUsers.ResetPassword,
+    resource: Resources.adminUsers({
+      userId: '.userId',
+    }),
+  })
   @Patch(':id/reset-password')
   async resetPassword(@Param('id') id: string) {
     return this.adminUserService.resetPassword(id);
@@ -158,7 +184,12 @@ export class AdminUserController {
 
   @ApiBearerAuth()
   @OpenApiResponse({ status: HttpStatus.OK, model: AdminUserDto })
-  @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminRole.Update)
+  @AdminCheckPolicies({
+    action: Actions.AdminUsers.UpdateUser,
+    resource: Resources.adminUsers({
+      userId: '.userId',
+    }),
+  })
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -178,7 +209,12 @@ export class AdminUserController {
 
   @ApiBearerAuth()
   @ApiResponse({ status: HttpStatus.OK, type: SuccessResponseDto })
-  @RequireAdminPermissions(ADMIN_PERMISSIONS.AdminRole.Delete)
+  @AdminCheckPolicies({
+    action: Actions.AdminUsers.DeleteUser,
+    resource: Resources.adminUsers({
+      userId: '.userId',
+    }),
+  })
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.adminUserService.remove({

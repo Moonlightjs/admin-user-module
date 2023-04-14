@@ -14,8 +14,8 @@ import {
   DEFAULT_TAKE,
 } from '@src/constants';
 import * as bcrypt from 'bcrypt';
-import { ChangeAdminPasswordInput } from 'module/modules/admin-user/dto/change-admin-password.input';
 import { AdminUserDto, AdminUserProfileDto } from './dto';
+import { ChangeAdminPasswordInput } from '@modules/admin-user/dto/change-admin-password.input';
 
 @Injectable()
 export class AdminUserService {

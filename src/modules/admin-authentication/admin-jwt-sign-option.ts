@@ -9,11 +9,11 @@ const adminAccessTokenOption = (
   );
   return {
     algorithm: 'RS256',
-    // privateKey: configService.get('JWT_ACCESS_TOKEN_SECRET_KEY'),
+    // privateKey: configService.get('ADMIN_JWT_ACCESS_TOKEN_SECRET_KEY'),
     expiresIn: jwtAccessTokenExpirationTime
       ? `${jwtAccessTokenExpirationTime}s`
       : 15 * 60, // 15 minutes
-    issuer: configService.get('JWT_ISSUER') || 'thangho98@dev.com',
+    issuer: configService.get('JWT_ISSUER') || 'Moonlight',
   };
 };
 
@@ -25,11 +25,11 @@ const adminRefreshTokenOption = (
   );
   return {
     algorithm: 'HS256',
-    secret: configService.get('JWT_REFRESH_TOKEN_SECRET_KEY'),
+    secret: configService.get('ADMIN_JWT_REFRESH_TOKEN_SECRET_KEY'),
     expiresIn: jwtRefreshTokenExpirationTime
       ? `${jwtRefreshTokenExpirationTime}s`
       : 60 * 60 * 24 * 3, // 3 months
-    issuer: configService.get('JWT_ISSUER') || 'thangho98@dev.com',
+    issuer: configService.get('ADMIN_JWT_ISSUER') || 'Moonlight',
   };
 };
 export { adminAccessTokenOption, adminRefreshTokenOption };

@@ -40,7 +40,8 @@ model AdminUser {
   deletedById String?   @db.Uuid()
   deletedBy   String?
 
-  roles AdminRole[] @relation("UserRoleRelation")
+  roles    AdminRole[]   @relation("UserRoleRelation")
+  policies AdminPolicy[] @relation("UserPolicyRelation")
 }
 
 enum UserAttributeType {
@@ -100,8 +101,9 @@ model AdminRole {
   deletedById String?   @db.Uuid()
   deletedBy   String?
 
-  permissions AdminPermission[] @relation("PermissionAdminRoleRelation")
+  permissions AdminPermission[] @relation("PermissionRoleRelation")
   users       AdminUser[]       @relation("UserRoleRelation")
+  policies    AdminPolicy[]     @relation("RolePolicyRelation")
 }
 
 model AdminPermission {
@@ -121,5 +123,27 @@ model AdminPermission {
   deletedById String?   @db.Uuid()
   deletedBy   String?
 
-  roles AdminRole[] @relation("PermissionAdminRoleRelation")
+  roles AdminRole[] @relation("PermissionRoleRelation")
+}
+
+model AdminPolicy {
+  id          String  @id @default(uuid()) @db.Uuid()
+  name        String  @db.VarChar(100)
+  version     String? @db.VarChar(100)
+  statements  Json?   @db.JsonB
+  description String? @db.VarChar(1000)
+  isSystem    Boolean @default(false)
+
+  createdAt   DateTime  @default(now()) @db.Timestamptz()
+  createdById String?   @db.Uuid()
+  createdBy   String?
+  updatedAt   DateTime  @updatedAt @db.Timestamptz()
+  updatedById String?   @db.Uuid()
+  updatedBy   String?
+  deletedAt   DateTime? @db.Timestamptz()
+  deletedById String?   @db.Uuid()
+  deletedBy   String?
+
+  users AdminUser[] @relation("UserPolicyRelation")
+  roles AdminRole[] @relation("RolePolicyRelation")
 }

@@ -4,12 +4,12 @@ import { IsString } from 'class-validator';
 
 @Expose()
 export class AdminLoginInput implements Readonly<AdminLoginInput> {
-  @ApiProperty({ required: true })
+  @ApiProperty({ required: true, type: String })
   @IsString()
   @Expose()
   username: string;
 
-  @ApiProperty({ required: true })
+  @ApiProperty({ required: true, type: String })
   @IsString()
   @Expose()
   password: string;

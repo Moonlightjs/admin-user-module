@@ -13,12 +13,11 @@ export class AdminJwtStrategy extends PassportStrategy(Strategy, 'admin-jwt') {
       secretOrKey: configService.get<string>(
         'ADMIN_JWT_ACCESS_TOKEN_PUBLIC_KEY',
       ),
-      passReqToCallback: true,
     });
   }
 
-  async validate(request: any, payload: AdminJwtPayload) {
-    httpContext.set('admin-user', payload);
-    request.adminUser = payload;
+  async validate(payload: AdminJwtPayload) {
+    httpContext.set('user', payload);
+    return payload;
   }
 }

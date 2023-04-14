@@ -1,3 +1,5 @@
+import { AdminRoleCreateNesteds } from '@modules/admin-authorization/role/dto';
+import { AdminPolicyCreateNesteds } from '@modules/admin-authorization/policy/dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 import {
@@ -8,67 +10,53 @@ import {
   IsUUID,
   ValidateNested,
 } from 'class-validator';
-
-@Expose()
-export class AdminRoleId {
-  @ApiProperty({ required: true })
-  @IsUUID()
-  @IsNotEmpty()
-  @Expose()
-  id: string;
-}
-
-@Expose()
-export class AdminRoleCreateNested {
-  @ApiProperty({ required: true, isArray: true, type: AdminRoleId })
-  @ValidateNested()
-  @IsArray()
-  @Type(() => AdminRoleId)
-  @Expose()
-  connect: AdminRoleId[];
-}
-
 @Expose()
 export class CreateAdminUserInput {
-  @ApiProperty({ required: true })
+  @ApiProperty({ required: true, type: String })
   @IsString()
   @IsNotEmpty()
   @Expose()
   public readonly username: string;
 
-  @ApiProperty({ required: true })
+  @ApiProperty({ required: true, type: String })
   @IsString()
   @IsNotEmpty()
   @Expose()
   public readonly password: string;
 
-  @ApiProperty({ required: false, nullable: true })
+  @ApiProperty({ required: false, nullable: true, type: String })
   @IsString()
   @IsNotEmpty()
   @Expose()
   public readonly email?: string;
 
-  @ApiProperty({ required: false, nullable: true })
+  @ApiProperty({ required: false, nullable: true, type: String })
   @IsString()
   @IsOptional()
   @Expose()
   public readonly firstName?: string;
 
-  @ApiProperty({ required: false, nullable: true })
+  @ApiProperty({ required: false, nullable: true, type: String })
   @IsString()
   @IsOptional()
   @Expose()
   public readonly lastName?: string;
 
-  @ApiProperty({ required: false, nullable: true })
+  @ApiProperty({ required: false, nullable: true, type: String })
   @IsString()
   @IsOptional()
   @Expose()
   public readonly displayName?: string | null;
 
-  @ApiProperty({ required: false })
+  @ApiProperty({ required: false, type: () => AdminRoleCreateNesteds })
   @ValidateNested()
-  @Type(() => AdminRoleCreateNested)
+  @Type(() => AdminRoleCreateNesteds)
   @Expose()
-  public readonly roles?: AdminRoleCreateNested;
+  public readonly roles?: AdminRoleCreateNesteds;
+
+  @ApiProperty({ required: true, type: () => AdminPolicyCreateNesteds })
+  @ValidateNested()
+  @Type(() => AdminPolicyCreateNesteds)
+  @Expose()
+  public readonly policies: AdminPolicyCreateNesteds;
 }

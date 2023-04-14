@@ -8,7 +8,8 @@ import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-
+import * as httpContext from 'express-http-context';
+import { AdminJwtPayload } from '@modules/admin-authentication/admin-jwt-payload';
 @Module({
   imports: [
     PrismaModule.forRoot({
@@ -38,6 +39,30 @@ import { AppService } from './app.service';
         events: {
           query: logQueryEvent,
         },
+        middlewares: [
+          async (params, next) => {
+            console.log('🚀 ---------------------------------------------🚀');
+            console.log('🚀 ~ file: app.module.ts:44 ~ params:', params);
+            console.log('🚀 ---------------------------------------------🚀');
+            const user = httpContext.get('user') as AdminJwtPayload;
+            const originalUrl = httpContext.get('originalUrl') as string;
+            if (user) {
+              if (params.action === 'create') {
+                params.args.data.createdById = user.sub;
+                params.args.data.createdBy = user.username;
+              }
+              if (params.action === 'update') {
+                params.args.data.updatedById = user.sub;
+                params.args.data.updatedBy = user.username;
+              }
+              // if (params.action === 'delete') {
+              //   params.args.data.deletedById = user.sub;
+              //   params.args.data.deletedBy = user.username;
+              // }
+            }
+            return next(params);
+          },
+        ],
       },
     }),
     AdminAuthenticationModule,
@@ -45,16 +70,6 @@ import { AppService } from './app.service';
     AdminUserModule,
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-    {
-      provide: APP_GUARD,
-      useClass: AdminRolesGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: AdminPermissionsGuard,
-    },
-  ],
+  providers: [AppService],
 })
 export class AppModule {}

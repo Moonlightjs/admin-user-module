@@ -1,4 +1,4 @@
-import { CreateAdminPermissionInput } from '@modules/admin-authorization/permission/dto/create-admin-permission.input';
+import { CreateAdminPermissionInput } from './create-admin-permission.input';
 import { PartialType } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 
